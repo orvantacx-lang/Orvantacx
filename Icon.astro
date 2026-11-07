@@ -1,0 +1,14 @@
+---
+import * as Lucide from "@lucide/astro";
+
+interface Props {
+  name: string;
+  size?: number;
+  class?: string;
+}
+const { name, size = 20, class: className = "" } = Astro.props;
+const pascal = name.split("-").map((p) => p.charAt(0).toUpperCase() + p.slice(1)).join("");
+const Component = (Lucide as Record<string, any>)[pascal];
+if (!Component) throw new Error(`Icon "${name}" (${pascal}) does not exist in @lucide/astro`);
+---
+<Component size={size} class={className} aria-hidden="true" focusable="false" />

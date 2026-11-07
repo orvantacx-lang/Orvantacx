@@ -1,0 +1,21 @@
+---
+import { flowSteps } from "../data/content";
+import Icon from "./Icon.astro";
+const icons = ["user", "audio-lines", "circle-check", "user-check", "clipboard-list"];
+---
+<ol class="grid gap-3 lg:grid-cols-5">
+  {flowSteps.map((s, i) => (
+    <li class:list={["relative flex gap-4 rounded-xl border p-5 lg:flex-col", i === 3 ? "border-teal bg-teal-light/60" : "border-slate-200 bg-white"]}>
+      <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-navy text-teal"><Icon name={icons[i]} size={22} /></span>
+      <div>
+        <h3 class="text-[16px] font-bold">{s.title}</h3>
+        <p class="mt-1 text-[14.5px] text-muted-strong">{s.text}</p>
+      </div>
+      {i < flowSteps.length - 1 && (
+        <span class="absolute -bottom-[13px] left-[34px] z-10 text-slate-400 lg:-right-[14px] lg:bottom-auto lg:left-auto lg:top-[34px]" aria-hidden="true">
+          <Icon name="arrow-right" size={18} class="rotate-90 lg:rotate-0" />
+        </span>
+      )}
+    </li>
+  ))}
+</ol>

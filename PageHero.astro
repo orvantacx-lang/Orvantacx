@@ -1,0 +1,24 @@
+---
+import Breadcrumbs from "./Breadcrumbs.astro";
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  crumbs?: { name: string; href?: string }[];
+}
+const { eyebrow, title, lead, crumbs = [] } = Astro.props;
+---
+<section class="on-dark relative overflow-hidden bg-navy text-white">
+  <div class="pointer-events-none absolute inset-y-0 right-0 hidden w-1/2 opacity-[0.07] md:block" aria-hidden="true">
+    <svg viewBox="0 0 400 300" class="h-full w-full" preserveAspectRatio="xMaxYMid slice" fill="none" stroke="#54C7B4" stroke-width="1.5">
+      <circle cx="320" cy="150" r="60"/><circle cx="320" cy="150" r="110"/><circle cx="320" cy="150" r="160"/><circle cx="320" cy="150" r="210"/>
+    </svg>
+  </div>
+  <div class="wrap relative py-14 sm:py-20">
+    {crumbs.length > 0 && <div class="mb-6"><Breadcrumbs items={crumbs} dark /></div>}
+    {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
+    <h1 class="max-w-3xl text-[2rem] font-extrabold !leading-[1.12] text-white sm:text-5xl">{title}</h1>
+    {lead && <p class="mt-5 max-w-2xl text-lg text-white/75">{lead}</p>}
+    <div class="mt-8 flex flex-wrap gap-3"><slot /></div>
+  </div>
+</section>

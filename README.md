@@ -6,12 +6,6 @@ Marketing website and enquiry system for **ORVANTA CX**, an AI-powered BPO and c
 - **Backend:** Cloudflare Pages Functions (`functions/`) with Cloudflare D1 (SQLite) for enquiries.
 - **Status:** built and tested locally. **Not deployed, not published, nothing purchased, no paid service connected.**
 
-## Cloudflare deployment warning
-
-This repository includes Pages Functions (`functions/`) and a D1 database binding. **Do not deploy only `dist/` using the dashboard's static drag-and-drop upload** if you need the enquiry form backend. Connect the full source repository to Cloudflare Pages through GitHub. Follow [`docs/START-HERE-WINDOWS.md`](docs/START-HERE-WINDOWS.md) for the Windows-friendly deployment sequence, D1 setup, and required `FORM_SECRET`.
-
-The form stores enquiries in Cloudflare D1. It does not currently write to Google Sheets.
-
 ## Quick start
 
 ```bash

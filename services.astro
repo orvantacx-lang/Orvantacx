@@ -1,0 +1,71 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import Icon from "../components/Icon.astro";
+import ServiceBody from "../components/ServiceBody.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import CTASection from "../components/CTASection.astro";
+import { services } from "../data/services";
+
+const dedicated = services.filter((s) => !s.href.startsWith("/services#"));
+const inline = services.filter((s) => s.href.startsWith("/services#"));
+---
+<BaseLayout
+  title="AI Contact Centre Services | Voice, Chat and Analytics"
+  description="Explore ORVANTA CX services: AI inbound and outbound calling, AI chat support, customer support, lead qualification, appointment booking and call analytics."
+  path="/services"
+  crumbs={[{ name: "Services", path: "/services" }]}
+>
+  <PageHero
+    eyebrow="Services"
+    title="AI-Powered Contact Centre Services for Modern Businesses."
+    lead="Explore our AI voice and chat services designed to manage routine customer conversations and support business communication workflows."
+    crumbs={[{ name: "Services" }]}
+  >
+    <a href="/contact" class="btn btn-primary">Get a Free Consultation</a>
+    <a href="/ai-voice-solutions" class="btn btn-outline-light">AI voice solutions</a>
+  </PageHero>
+
+  <section class="py-16 sm:py-20">
+    <div class="wrap">
+      <ul class="grid gap-px overflow-hidden rounded-2xl border border-slate-200 bg-slate-200 md:grid-cols-2 lg:grid-cols-3">
+        {services.map((s) => (
+          <li class="flex flex-col bg-white p-7">
+            <span class="flex h-12 w-12 items-center justify-center rounded-xl bg-navy text-teal"><Icon name={s.icon} size={24} /></span>
+            <h2 class="mt-5 text-lg font-bold">{s.name}</h2>
+            <p class="mt-2 text-[15px] text-muted-strong">{s.description}</p>
+            <a href={s.href} class="mt-5 inline-flex items-center gap-1.5 pt-1 text-[15px] font-semibold text-teal-ink hover:underline" style="margin-top:auto">
+              {s.href.startsWith("/services#") ? "Read details below" : "Explore service"}<Icon name="arrow-right" size={16} />
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-8 max-w-3xl text-[15.5px] text-muted-strong">Every service starts from the information and conversation flows you approve, and every service has a defined route to a person. Integrations are assessed per project; none is assumed to be connected already.</p>
+    </div>
+  </section>
+
+  {inline.map((s, i) => (
+    <section id={s.slug} class:list={["scroll-mt-20 py-16 sm:py-20", i % 2 === 0 ? "bg-mist" : "bg-white"]}>
+      <div class="wrap">
+        <div class="mb-8 flex items-center gap-3">
+          <span class="flex h-11 w-11 items-center justify-center rounded-lg bg-navy text-teal"><Icon name={s.icon} size={22} /></span>
+          <h2 class="text-2xl font-extrabold sm:text-3xl">{s.name}</h2>
+        </div>
+        <ServiceBody service={s} headingLevel="h3" />
+      </div>
+    </section>
+  ))}
+
+  <section class="py-16 sm:py-20">
+    <div class="wrap">
+      <SectionHeading eyebrow="Go deeper" title="Service pages" lead="Dedicated pages for our core voice and chat services." />
+      <ul class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {[{ name: "AI Voice Solutions", href: "/ai-voice-solutions" }, ...dedicated.map((s) => ({ name: s.name, href: s.href }))].map((l) => (
+          <li><a href={l.href} class="flex items-center justify-between rounded-lg border border-slate-200 px-4 py-3.5 font-semibold hover:border-teal-ink">{l.name}<Icon name="arrow-right" size={16} class="text-teal-ink" /></a></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

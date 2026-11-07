@@ -1,0 +1,13 @@
+---
+interface Props { steps: readonly { title: string; text: string }[]; dark?: boolean }
+const { steps, dark = false } = Astro.props;
+---
+<ol class="grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+  {steps.map((s, i) => (
+    <li class="relative border-t pt-5" style={`border-color:${dark ? "rgba(255,255,255,.18)" : "#d9e1ea"}`}>
+      <span class="font-display text-sm font-bold text-teal-ink" style={dark ? "color:#54C7B4" : ""}>{String(i + 1).padStart(2, "0")}</span>
+      <h3 class:list={["mt-1 text-lg font-bold", dark && "!text-white"]}>{s.title}</h3>
+      <p class:list={["mt-2 text-[15.5px]", dark ? "text-white/70" : "text-muted-strong"]}>{s.text}</p>
+    </li>
+  ))}
+</ol>

@@ -1,0 +1,6 @@
+---
+import ServicePage from "../layouts/ServicePage.astro";
+import { serviceBySlug } from "../data/services";
+const service = serviceBySlug("ai-chat-support")!;
+---
+<ServicePage service={service} />

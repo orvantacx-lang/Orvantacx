@@ -1,0 +1,65 @@
+---
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import { mainNav } from "../data/site";
+
+interface Props { current: string }
+const { current } = Astro.props;
+const isCurrent = (href: string) => (href === "/" ? current === "/" : current === href || current.startsWith(href + "/"));
+---
+<header class="sticky top-0 z-40 border-b border-white/10 bg-navy/95 backdrop-blur on-dark">
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-navy">Skip to main content</a>
+  <div class="wrap flex h-[68px] items-center justify-between gap-6">
+    <a href="/" aria-label="ORVANTA CX home"><Logo dark /></a>
+
+    <nav aria-label="Main" class="hidden lg:block">
+      <ul class="flex items-center gap-1">
+        {mainNav.map((item) => (
+          <li>
+            <a href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}
+               class:list={["rounded-md px-3 py-2 text-[14.5px] font-medium transition-colors", isCurrent(item.href) ? "text-teal" : "text-white/80 hover:text-white"]}>
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a href="/contact" class="btn btn-primary hidden !px-4 !py-2.5 sm:inline-flex">Get a Free Consultation</a>
+      <button id="menu-toggle" type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-white/20 text-white lg:hidden" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+        <span data-open><Icon name="menu" size={22} /></span>
+        <span data-close hidden><Icon name="x" size={22} /></span>
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobile-menu" aria-label="Mobile" class="border-t border-white/10 bg-navy lg:hidden" hidden>
+    <ul class="wrap flex flex-col py-3">
+      {mainNav.map((item) => (
+        <li>
+          <a href={item.href} aria-current={isCurrent(item.href) ? "page" : undefined}
+             class:list={["block rounded-md px-2 py-3 text-base font-medium", isCurrent(item.href) ? "text-teal" : "text-white/85"]}>{item.label}</a>
+        </li>
+      ))}
+      <li class="pt-2"><a href="/contact" class="btn btn-primary w-full">Get a Free Consultation</a></li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const btn = document.getElementById("menu-toggle") as HTMLButtonElement | null;
+  const menu = document.getElementById("mobile-menu");
+  if (btn && menu) {
+    const set = (open: boolean) => {
+      btn.setAttribute("aria-expanded", String(open));
+      btn.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      menu.hidden = !open;
+      btn.querySelector<HTMLElement>("[data-open]")!.hidden = open;
+      btn.querySelector<HTMLElement>("[data-close]")!.hidden = !open;
+    };
+    btn.addEventListener("click", () => set(btn.getAttribute("aria-expanded") !== "true"));
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !menu.hidden) { set(false); btn.focus(); } });
+    window.matchMedia("(min-width: 1024px)").addEventListener("change", (m) => { if (m.matches) set(false); });
+  }
+</script>

@@ -1,0 +1,26 @@
+---
+interface Props {
+  title?: string;
+  text?: string;
+  primary?: { label: string; href: string };
+  secondary?: { label: string; href: string };
+}
+const {
+  title = "Ready to Rethink Your Customer Communication?",
+  text = "Tell us about your customer conversations. We will review your requirements and suggest where AI voice and chat can help, and where your people should stay in the lead.",
+  primary = { label: "Get a Free Consultation", href: "/contact" },
+  secondary = { label: "View Pricing", href: "/pricing" },
+} = Astro.props;
+---
+<section class="on-dark bg-navy text-white">
+  <div class="wrap py-16 sm:py-20">
+    <div class="max-w-2xl">
+      <h2 class="text-3xl font-extrabold text-white sm:text-4xl">{title}</h2>
+      <p class="mt-4 text-lg text-white/75">{text}</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href={primary.href} class="btn btn-primary">{primary.label}</a>
+        <a href={secondary.href} class="btn btn-outline-light">{secondary.label}</a>
+      </div>
+    </div>
+  </div>
+</section>

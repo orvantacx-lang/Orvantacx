@@ -1,0 +1,25 @@
+---
+import ServicePage from "../layouts/ServicePage.astro";
+import ConversationExample from "../components/ConversationExample.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import Icon from "../components/Icon.astro";
+import { voiceSolutions } from "../data/services";
+---
+<ServicePage service={voiceSolutions}>
+  <div class="mt-16 grid gap-5 md:grid-cols-2">
+    <a href="/inbound-calling" class="group rounded-xl border border-slate-200 p-6 hover:border-teal-ink">
+      <Icon name="phone-incoming" size={24} class="text-teal-ink" /><h2 class="mt-3 text-xl font-bold">AI Inbound Calling</h2>
+      <p class="mt-2 text-[15px] text-muted-strong">Answer, route and capture incoming enquiries.</p>
+      <span class="mt-3 inline-flex items-center gap-1.5 text-[15px] font-semibold text-teal-ink">Read more<Icon name="arrow-right" size={16} /></span>
+    </a>
+    <a href="/outbound-calling" class="group rounded-xl border border-slate-200 p-6 hover:border-teal-ink">
+      <Icon name="phone-outgoing" size={24} class="text-teal-ink" /><h2 class="mt-3 text-xl font-bold">AI Outbound Calling</h2>
+      <p class="mt-2 text-[15px] text-muted-strong">Permitted reminders, confirmations and follow-ups.</p>
+      <span class="mt-3 inline-flex items-center gap-1.5 text-[15px] font-semibold text-teal-ink">Read more<Icon name="arrow-right" size={16} /></span>
+    </a>
+  </div>
+  <div class="mt-16">
+    <SectionHeading eyebrow="Example" title="What a Designed Conversation Looks Like" lead="Conversations are written and approved with you before any call is made. Here is a short sample in English and Hindi." as="h2" />
+    <div class="mt-8"><ConversationExample /></div>
+  </div>
+</ServicePage>

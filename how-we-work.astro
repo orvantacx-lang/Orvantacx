@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import CTASection from "../components/CTASection.astro";
+import { detailedProcess, workingArrangements } from "../data/content";
+---
+<BaseLayout
+  title="How We Work | Discovery to a Managed AI Contact Centre"
+  description="ORVANTA CX works in six steps: discovery, conversation design, AI configuration, testing, approved go-live and monitoring, with clear responsibilities."
+  path="/how-we-work"
+  crumbs={[{ name: "How We Work", path: "/how-we-work" }]}
+>
+  <PageHero
+    eyebrow="How we work"
+    title="From First Conversation to a Managed AI Contact Centre."
+    lead="A clear sequence, with your approval before anything goes live."
+    crumbs={[{ name: "How We Work" }]}
+  >
+    <a href="/contact" class="btn btn-primary">Start with a conversation</a>
+  </PageHero>
+
+  <section class="py-16 sm:py-24">
+    <div class="wrap">
+      <ol class="space-y-0">
+        {detailedProcess.map((s, i) => (
+          <li class="grid gap-3 border-t border-slate-200 py-8 sm:grid-cols-12 sm:gap-8">
+            <div class="sm:col-span-3"><span class="font-display text-4xl font-extrabold text-teal-ink">{String(i + 1).padStart(2, "0")}</span></div>
+            <div class="sm:col-span-9">
+              <h2 class="text-xl font-bold sm:text-2xl">Step {i + 1}: {s.title}</h2>
+              <p class="mt-2 max-w-2xl text-[17px] text-muted-strong">{s.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="bg-mist py-16 sm:py-24">
+    <div class="wrap">
+      <SectionHeading eyebrow="Working arrangements" title="Who does what, and what is agreed in advance." lead="We do not imply that every integration is already connected. What is in scope, and what each side is responsible for, is written down before launch." />
+      <dl class="mt-12 grid gap-x-12 gap-y-8 md:grid-cols-2">
+        {workingArrangements.map((w) => (
+          <div class="border-t border-slate-300 pt-5">
+            <dt class="font-display text-lg font-bold">{w.title}</dt>
+            <dd class="mt-2 text-[15.5px] text-muted-strong">{w.text}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

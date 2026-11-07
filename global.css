@@ -1,0 +1,50 @@
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/manrope";
+@import "@fontsource-variable/noto-sans-devanagari";
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #101d30;
+  --color-navy-2: #17283d;
+  --color-teal: #54c7b4;
+  --color-teal-light: #ddf5ef;
+  --color-ink: #17263a;
+  --color-muted: #697b90;
+  --color-mist: #f4f7fa;
+  /* Accessible variants (the brand teal/muted tones are too light for small text on white) */
+  --color-teal-ink: #17776a;
+  --color-muted-strong: #52657a;
+  --font-sans: "Inter Variable", "Noto Sans Devanagari Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Manrope Variable", "Inter Variable", "Noto Sans Devanagari Variable", ui-sans-serif, system-ui, sans-serif;
+  --animate-wave: wave 1.8s ease-in-out infinite;
+  --animate-dash: dash 2.6s linear infinite;
+  @keyframes wave { 0%, 100% { transform: scaleY(0.45); } 50% { transform: scaleY(1); } }
+  @keyframes dash { to { stroke-dashoffset: -28; } }
+}
+
+@layer base {
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+  body { @apply bg-white font-sans text-ink antialiased; line-height: 1.65; }
+  h1, h2, h3, h4 { @apply font-display text-ink; letter-spacing: -0.015em; line-height: 1.15; }
+  :focus-visible { outline: 2px solid var(--color-teal-ink); outline-offset: 3px; border-radius: 4px; }
+  .on-dark :focus-visible { outline-color: var(--color-teal); }
+  ::selection { background: var(--color-teal); color: var(--color-navy); }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
+  }
+}
+
+@layer components {
+  .wrap { @apply mx-auto w-full max-w-6xl px-5 sm:px-8; }
+  .eyebrow { @apply text-sm font-semibold tracking-wide text-teal-ink; }
+  .on-dark .eyebrow { @apply text-teal; }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-3 text-[15px] font-semibold transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60; }
+  .btn-primary { @apply bg-teal text-navy hover:bg-[#6fd6c5]; }
+  .btn-dark { @apply bg-navy text-white hover:bg-navy-2; }
+  .btn-outline { @apply border border-slate-300 bg-white text-ink hover:border-ink; }
+  .btn-outline-light { @apply border border-white/30 text-white hover:border-white hover:bg-white/5; }
+  .field { @apply block w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-[15px] text-ink placeholder:text-slate-400 focus:border-teal-ink focus:outline-none focus:ring-2 focus:ring-teal/40; }
+  .field[aria-invalid="true"] { @apply border-red-500 focus:ring-red-200; }
+  .prose-lite p + p { @apply mt-4; }
+}

@@ -1,0 +1,36 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import ServiceBody from "../components/ServiceBody.astro";
+import CTASection from "../components/CTASection.astro";
+import type { Service } from "../data/services";
+import { company } from "../data/site";
+
+interface Props { service: Service; lead?: string }
+const { service, lead } = Astro.props;
+const site = (Astro.site ?? new URL("https://orvanta-cx.pages.dev")).toString().replace(/\/$/, "");
+const serviceLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: service.name,
+  description: service.seoDescription,
+  url: `${site}${service.href}`,
+  serviceType: service.name,
+  provider: { "@type": "Organization", name: company.name, url: `${site}/` },
+  areaServed: [{ "@type": "Country", name: "India" }, { "@type": "Place", name: "International clients, subject to service and regulatory requirements" }],
+};
+const crumbs = [{ name: "Services", path: "/services" }, { name: service.name, path: service.href }];
+---
+<BaseLayout title={service.seoTitle} description={service.seoDescription} path={service.href} crumbs={crumbs} jsonLd={[serviceLd]}>
+  <PageHero eyebrow="Services" title={service.name} lead={lead ?? service.description} crumbs={[{ name: "Services", href: "/services" }, { name: service.name }]}>
+    <a href={`/contact?service=${encodeURIComponent(service.formValue)}`} class="btn btn-primary">Discuss this service</a>
+    <a href="/pricing" class="btn btn-outline-light">View pricing</a>
+  </PageHero>
+  <section class="py-16 sm:py-20"><div class="wrap"><slot name="before" /><ServiceBody service={service} showDescription={false} /><slot /></div></section>
+  <CTASection
+    title={`Talk to us about ${service.name}`}
+    text="Share what your customers ask and how you handle it today. We will tell you honestly what suits AI, what needs people, and what we would need from you."
+    primary={{ label: "Discuss this service", href: `/contact?service=${encodeURIComponent(service.formValue)}` }}
+    secondary={{ label: "All services", href: "/services" }}
+  />
+</BaseLayout>

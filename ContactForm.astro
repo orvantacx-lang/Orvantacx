@@ -1,0 +1,356 @@
+---
+import { SERVICE_OPTIONS, VOLUME_OPTIONS, LANGUAGE_OPTIONS, CONSENT_TEXT } from "../lib/enquiry";
+import { priorityCountries, otherCountries } from "../data/countries";
+import { plans, industries } from "../data/content";
+import { company } from "../data/site";
+import Icon from "./Icon.astro";
+
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? "";
+const prefill = JSON.stringify({
+  plans: Object.fromEntries(plans.map((p) => [p.slug, p.name])),
+  industries: Object.fromEntries(industries.map((i) => [i.slug, i.name])),
+});
+---
+<div id="enquiry-root" data-prefill={prefill} data-turnstile={turnstileSiteKey}>
+  <!-- Shown only when the backend cannot be reached or is not configured -->
+  <div id="form-unavailable" role="alert" hidden class="mb-6 rounded-xl border border-amber-300 bg-amber-50 p-5 text-amber-950">
+    <p class="flex gap-3 font-semibold"><Icon name="triangle-alert" size={20} class="mt-0.5 shrink-0" />The online enquiry form is not available right now.</p>
+    <p class="mt-2 text-[15.5px]">Nothing you type here will be sent. Please contact us directly:</p>
+    <ul class="mt-2 space-y-1 text-[15.5px]">
+      <li>Email: <a class="font-semibold underline" href={`mailto:${company.email}`}>{company.email}</a></li>
+      <li>Phone: <a class="font-semibold underline" href={company.phoneHref}>{company.phone}</a></li>
+    </ul>
+  </div>
+
+  <div id="form-success" tabindex="-1" hidden class="rounded-2xl border border-teal-ink bg-teal-light/60 p-8">
+    <p class="flex items-center gap-3 font-display text-2xl font-extrabold"><Icon name="circle-check" size={28} class="text-teal-ink" />Enquiry received</p>
+    <p id="success-message" class="mt-3 text-[17px]"></p>
+    <p class="mt-4 text-[15.5px]">Reference: <strong id="success-ref" class="font-mono"></strong></p>
+    <p class="mt-1 text-[14.5px] text-muted-strong">Please quote this reference if you contact us about this enquiry.</p>
+    <a href="/" class="btn btn-dark mt-6">Back to home</a>
+  </div>
+
+  <form id="enquiry-form" novalidate class="space-y-5" aria-describedby="form-note">
+    <noscript><p class="rounded-lg border border-amber-300 bg-amber-50 p-4 text-amber-950">This form needs JavaScript. Please email <a class="underline" href={`mailto:${company.email}`}>{company.email}</a> instead.</p></noscript>
+
+    <div id="form-error" role="alert" tabindex="-1" hidden class="rounded-lg border border-red-300 bg-red-50 px-4 py-3 text-[15px] text-red-900"></div>
+
+    <div class="grid gap-5 sm:grid-cols-2">
+      <div>
+        <label for="fullName" class="mb-1.5 block text-sm font-semibold">Full name <span class="text-red-700" aria-hidden="true">*</span></label>
+        <input id="fullName" name="fullName" class="field" autocomplete="name" required maxlength="100" />
+        <p class="field-error mt-1 text-sm text-red-700" id="err-fullName" hidden></p>
+      </div>
+      <div>
+        <label for="email" class="mb-1.5 block text-sm font-semibold">Business email <span class="text-red-700" aria-hidden="true">*</span></label>
+        <input id="email" name="email" type="email" class="field" autocomplete="email" required maxlength="254" />
+        <p class="field-error mt-1 text-sm text-red-700" id="err-email" hidden></p>
+      </div>
+      <div>
+        <label for="phone" class="mb-1.5 block text-sm font-semibold">Phone number <span class="font-normal text-muted-strong">(optional)</span></label>
+        <input id="phone" name="phone" type="tel" class="field" autocomplete="tel" maxlength="25" placeholder="+91 …" />
+        <p class="field-error mt-1 text-sm text-red-700" id="err-phone" hidden></p>
+      </div>
+      <div>
+        <label for="company" class="mb-1.5 block text-sm font-semibold">Company name <span class="text-red-700" aria-hidden="true">*</span></label>
+        <input id="company" name="company" class="field" autocomplete="organization" required maxlength="120" />
+        <p class="field-error mt-1 text-sm text-red-700" id="err-company" hidden></p>
+      </div>
+      <div>
+        <label for="country" class="mb-1.5 block text-sm font-semibold">Country <span class="text-red-700" aria-hidden="true">*</span></label>
+        <select id="country" name="country" class="field" autocomplete="country-name" required>
+          <option value="">Select your country</option>
+          {priorityCountries.map((c) => <option value={c}>{c}</option>)}
+          <option disabled>──────────</option>
+          {otherCountries.map((c) => <option value={c}>{c}</option>)}
+        </select>
+        <p class="field-error mt-1 text-sm text-red-700" id="err-country" hidden></p>
+      </div>
+      <div>
+        <label for="website" class="mb-1.5 block text-sm font-semibold">Website <span class="font-normal text-muted-strong">(optional)</span></label>
+        <input id="website" name="website" class="field" inputmode="url" autocomplete="url" maxlength="200" placeholder="www.yourcompany.com" />
+        <p class="field-error mt-1 text-sm text-red-700" id="err-website" hidden></p>
+      </div>
+      <div>
+        <label for="service" class="mb-1.5 block text-sm font-semibold">Service required <span class="text-red-700" aria-hidden="true">*</span></label>
+        <select id="service" name="service" class="field" required>
+          <option value="">Select a service</option>
+          {SERVICE_OPTIONS.map((o) => <option value={o}>{o}</option>)}
+        </select>
+        <p class="field-error mt-1 text-sm text-red-700" id="err-service" hidden></p>
+      </div>
+      <div>
+        <label for="monthlyVolume" class="mb-1.5 block text-sm font-semibold">Expected monthly call volume <span class="font-normal text-muted-strong">(optional)</span></label>
+        <select id="monthlyVolume" name="monthlyVolume" class="field">
+          <option value="">Select a range</option>
+          {VOLUME_OPTIONS.map((o) => <option value={o}>{o}</option>)}
+        </select>
+        <p class="field-error mt-1 text-sm text-red-700" id="err-monthlyVolume" hidden></p>
+      </div>
+      <div>
+        <label for="language" class="mb-1.5 block text-sm font-semibold">Preferred language <span class="text-red-700" aria-hidden="true">*</span></label>
+        <select id="language" name="language" class="field" required>
+          {LANGUAGE_OPTIONS.map((o) => <option value={o}>{o}</option>)}
+        </select>
+        <p class="field-error mt-1 text-sm text-red-700" id="err-language" hidden></p>
+      </div>
+      <div>
+        <label for="platform" class="mb-1.5 block text-sm font-semibold">Existing platform or telephony provider</label>
+        <input id="platform" name="platform" class="field" maxlength="150" placeholder="Optional" />
+        <p class="field-error mt-1 text-sm text-red-700" id="err-platform" hidden></p>
+      </div>
+    </div>
+
+    <fieldset>
+      <legend class="mb-1.5 block text-sm font-semibold">Preferred contact method <span class="text-red-700" aria-hidden="true">*</span></legend>
+      <div class="flex gap-6">
+        <label class="flex items-center gap-2 text-[15px]"><input type="radio" name="contactMethod" value="Email" checked class="h-4 w-4 accent-[#17776a]" />Email</label>
+        <label class="flex items-center gap-2 text-[15px]"><input type="radio" name="contactMethod" value="Phone" class="h-4 w-4 accent-[#17776a]" />Phone</label>
+      </div>
+      <p class="field-error mt-1 text-sm text-red-700" id="err-contactMethod" hidden></p>
+    </fieldset>
+
+    <div>
+      <label for="requirements" class="mb-1.5 block text-sm font-semibold">Project requirements <span class="text-red-700" aria-hidden="true">*</span></label>
+      <textarea id="requirements" name="requirements" rows="6" class="field" required minlength="20" maxlength="3000" placeholder="What do your customers ask about? Which calls or chats would you like to hand to AI?"></textarea>
+      <div class="mt-1 flex justify-between gap-4 text-sm">
+        <p class="field-error text-red-700" id="err-requirements" hidden></p>
+        <p class="ml-auto text-muted-strong"><span id="req-count">0</span> / 3000</p>
+      </div>
+    </div>
+
+    <!-- Honeypot: invisible to people, tempting to bots -->
+    <div style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden" aria-hidden="true">
+      <label for="nickname">Leave this field empty</label>
+      <input id="nickname" name="nickname" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <div id="turnstile-box" hidden></div>
+
+    <div>
+      <label class="flex items-start gap-3 text-[15px]">
+        <input type="checkbox" id="consent" name="consent" class="mt-1 h-4 w-4 shrink-0 accent-[#17776a]" required />
+        <span>{CONSENT_TEXT} <a href="/privacy-policy" class="font-semibold text-teal-ink underline">Read the Privacy Policy</a>. <span class="text-red-700" aria-hidden="true">*</span></span>
+      </label>
+      <p class="field-error mt-1 text-sm text-red-700" id="err-consent" hidden></p>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-4">
+      <button id="submit-btn" type="submit" class="btn btn-dark min-w-[170px]" disabled>
+        <span data-idle>Send enquiry</span>
+        <span data-busy hidden class="inline-flex items-center gap-2"><span class="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"></span>Sending…</span>
+      </button>
+      <p id="form-note" class="text-sm text-muted-strong">Fields marked * are required. We only tell you it was received once it has been saved.</p>
+    </div>
+    <p id="form-status" class="sr-only" role="status" aria-live="polite"></p>
+  </form>
+</div>
+
+<script>
+  import { validateEnquiry, MESSAGES, type FieldName } from "../lib/enquiry";
+
+  const root = document.getElementById("enquiry-root") as HTMLElement;
+  const form = document.getElementById("enquiry-form") as HTMLFormElement;
+  const submitBtn = document.getElementById("submit-btn") as HTMLButtonElement;
+  const banner = document.getElementById("form-error") as HTMLElement;
+  const unavailable = document.getElementById("form-unavailable") as HTMLElement;
+  const success = document.getElementById("form-success") as HTMLElement;
+  const status = document.getElementById("form-status") as HTMLElement;
+
+  let token = "";
+  let tokenAt = 0;
+  let sending = false;
+  let turnstileToken = "";
+  const turnstileKey = root.dataset.turnstile || "";
+
+  const FIELDS: FieldName[] = ["fullName", "email", "phone", "company", "country", "website", "service", "monthlyVolume", "language", "platform", "contactMethod", "requirements", "consent"];
+
+  const el = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | RadioNodeList;
+
+  function collect() {
+    const v: Record<string, unknown> = {};
+    for (const f of FIELDS) {
+      const e = el(f);
+      if (f === "consent") v[f] = (e as HTMLInputElement).checked;
+      else v[f] = (e as RadioNodeList | HTMLInputElement).value;
+    }
+    return v;
+  }
+
+  function setError(name: string, message: string | null) {
+    const p = document.getElementById(`err-${name}`);
+    const input = form.querySelector<HTMLElement>(`[name="${name}"]`);
+    if (p) { p.textContent = message ?? ""; p.hidden = !message; }
+    form.querySelectorAll<HTMLElement>(`[name="${name}"]`).forEach((i) => {
+      if (message) { i.setAttribute("aria-invalid", "true"); i.setAttribute("aria-describedby", `err-${name}`); }
+      else { i.removeAttribute("aria-invalid"); i.removeAttribute("aria-describedby"); }
+    });
+    return input;
+  }
+  const clearErrors = () => FIELDS.forEach((f) => setError(f, null));
+
+  function showBanner(message: string) {
+    banner.textContent = message;
+    banner.hidden = false;
+    banner.focus();
+    banner.scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+
+  function setBusy(busy: boolean) {
+    sending = busy;
+    submitBtn.disabled = busy || !token;
+    submitBtn.querySelector<HTMLElement>("[data-idle]")!.hidden = busy;
+    submitBtn.querySelector<HTMLElement>("[data-busy]")!.hidden = !busy;
+    form.setAttribute("aria-busy", String(busy));
+    status.textContent = busy ? "Sending your enquiry" : "";
+  }
+
+  function markUnavailable() {
+    token = "";
+    submitBtn.disabled = true;
+    unavailable.hidden = false;
+    form.querySelectorAll<HTMLInputElement>("input, select, textarea, button").forEach((i) => (i.disabled = true));
+  }
+
+  async function fetchToken(): Promise<boolean> {
+    try {
+      const res = await fetch("/api/enquiry-token", { headers: { Accept: "application/json" }, cache: "no-store" });
+      const type = res.headers.get("content-type") ?? "";
+      if (!res.ok || !type.includes("application/json")) return false;
+      const data = await res.json();
+      if (!data?.ok || typeof data.token !== "string") return false;
+      token = data.token;
+      tokenAt = Date.now();
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  // --- Prefill from links such as /contact?service=AI%20Chat%20Support&plan=growth
+  (function prefill() {
+    const params = new URLSearchParams(location.search);
+    const lookups = JSON.parse(root.dataset.prefill || "{}") as { plans: Record<string, string>; industries: Record<string, string> };
+    const service = params.get("service");
+    const serviceSelect = el("service") as HTMLSelectElement;
+    if (service && Array.from(serviceSelect.options).some((o) => o.value === service)) serviceSelect.value = service;
+    const bits: string[] = [];
+    const plan = params.get("plan");
+    const industry = params.get("industry");
+    if (plan && lookups.plans[plan]) bits.push(`I am interested in the ${lookups.plans[plan]} package.`);
+    if (industry && lookups.industries[industry]) bits.push(`Industry: ${lookups.industries[industry]}.`);
+    const ta = el("requirements") as HTMLTextAreaElement;
+    if (bits.length && !ta.value) ta.value = bits.join(" ") + " ";
+    updateCount();
+  })();
+
+  function updateCount() {
+    document.getElementById("req-count")!.textContent = String((el("requirements") as HTMLTextAreaElement).value.length);
+  }
+  (el("requirements") as HTMLTextAreaElement).addEventListener("input", updateCount);
+
+  // Validate a single field when the person leaves it
+  form.addEventListener("focusout", (e) => {
+    const t = e.target as HTMLInputElement;
+    if (!t.name || !FIELDS.includes(t.name as FieldName) || t.name === "consent" || t.name === "contactMethod") return;
+    if (!t.value && !t.required) { setError(t.name, null); return; }
+    const r = validateEnquiry(collect());
+    setError(t.name, r.ok ? null : (r.errors[t.name as FieldName] ?? null));
+  });
+  form.addEventListener("input", (e) => {
+    const t = e.target as HTMLInputElement;
+    if (t.getAttribute?.("aria-invalid") === "true") {
+      const r = validateEnquiry(collect());
+      if (r.ok || !r.errors[t.name as FieldName]) setError(t.name, null);
+    }
+  });
+
+  function applyErrors(errors: Partial<Record<FieldName, string>>) {
+    clearErrors();
+    let first: HTMLElement | null = null;
+    for (const f of FIELDS) {
+      const m = errors[f];
+      if (m) { const i = setError(f, m); first = first ?? i; }
+    }
+    first?.focus();
+  }
+
+  async function loadTurnstile() {
+    if (!turnstileKey) return;
+    const box = document.getElementById("turnstile-box")!;
+    box.hidden = false;
+    await new Promise<void>((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      s.async = true; s.onload = () => resolve(); s.onerror = () => reject(new Error("turnstile"));
+      document.head.appendChild(s);
+    });
+    (window as any).turnstile.render(box, {
+      sitekey: turnstileKey,
+      callback: (t: string) => { turnstileToken = t; },
+      "expired-callback": () => { turnstileToken = ""; },
+      "error-callback": () => { turnstileToken = ""; },
+    });
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (sending) return; // duplicate-click protection
+    banner.hidden = true;
+
+    const raw = collect();
+    const result = validateEnquiry(raw);
+    if (!result.ok) {
+      applyErrors(result.errors);
+      status.textContent = "Please correct the highlighted fields.";
+      return;
+    }
+    clearErrors();
+
+    if (turnstileKey && !turnstileToken) { showBanner("Please complete the security check, then submit again."); return; }
+
+    setBusy(true);
+    try {
+      if (!token || Date.now() - tokenAt > 90 * 60 * 1000) {
+        const ok = await fetchToken();
+        if (!ok) { markUnavailable(); setBusy(false); unavailable.scrollIntoView({ block: "center" }); return; }
+        showBanner(MESSAGES.session);
+        setBusy(false);
+        return;
+      }
+      const res = await fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({ ...raw, nickname: (el("nickname") as HTMLInputElement).value, token, turnstileToken }),
+      });
+      let data: any = null;
+      try { data = await res.json(); } catch { /* not JSON */ }
+
+      if (res.ok && data?.ok === true && typeof data.id === "string") {
+        form.hidden = true;
+        document.getElementById("success-message")!.textContent = data.message || MESSAGES.success;
+        document.getElementById("success-ref")!.textContent = data.id;
+        success.hidden = false;
+        success.focus();
+        success.scrollIntoView({ block: "center", behavior: "smooth" });
+        status.textContent = "Your enquiry has been received and saved.";
+        return;
+      }
+      if (res.status === 503 && data?.code === "not_configured") { markUnavailable(); return; }
+      if (res.status === 400 && data?.errors) { applyErrors(data.errors); showBanner(data.message || MESSAGES.rejected); return; }
+      if (data?.code?.startsWith("token_")) { await fetchToken(); }
+      showBanner(data?.message || MESSAGES.storageFailed);
+    } catch {
+      showBanner(MESSAGES.network);
+    } finally {
+      if (!form.hidden) setBusy(false);
+    }
+  });
+
+  (async () => {
+    const ok = await fetchToken();
+    if (!ok) { markUnavailable(); return; }
+    submitBtn.disabled = false;
+    loadTurnstile().catch(() => showBanner("The security check could not load. Please email us instead."));
+  })();
+</script>

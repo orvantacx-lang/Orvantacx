@@ -1,0 +1,50 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import ContactForm from "../components/ContactForm.astro";
+import Icon from "../components/Icon.astro";
+import { company } from "../data/site";
+---
+<BaseLayout
+  title="Contact ORVANTA CX | Discuss Your Customer Communication Needs"
+  description="Contact ORVANTA CX in Lucknow, India to discuss AI voice and chat support for your business. Send an enquiry, email orvantacx@gmail.com or call +91 7355309230."
+  path="/contact"
+  crumbs={[{ name: "Contact Us", path: "/contact" }]}
+>
+  <PageHero
+    eyebrow="Contact us"
+    title="Let's Discuss Your Customer Communication Requirements."
+    lead="Tell us about your business and the customer interactions you would like to manage. Our team will review your requirements and discuss the next steps."
+    crumbs={[{ name: "Contact Us" }]}
+  />
+
+  <section class="py-14 sm:py-20">
+    <div class="wrap grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-7">
+        <h2 class="mb-6 text-2xl font-extrabold">Send an enquiry</h2>
+        <ContactForm />
+      </div>
+
+      <aside class="lg:col-span-5" aria-label="Contact details">
+        <div class="rounded-2xl bg-mist p-7">
+          <h2 class="text-xl font-extrabold">{company.name}</h2>
+          <ul class="mt-5 space-y-4 text-[16px]">
+            <li class="flex gap-3"><Icon name="mail" size={20} class="mt-1 shrink-0 text-teal-ink" /><span><span class="block text-sm text-muted-strong">Email</span><a class="font-semibold text-ink underline decoration-teal underline-offset-4" href={`mailto:${company.email}`}>{company.email}</a></span></li>
+            <li class="flex gap-3"><Icon name="phone" size={20} class="mt-1 shrink-0 text-teal-ink" /><span><span class="block text-sm text-muted-strong">Phone</span><a class="font-semibold text-ink underline decoration-teal underline-offset-4" href={company.phoneHref}>{company.phone}</a></span></li>
+            <li class="flex gap-3"><Icon name="map-pin" size={20} class="mt-1 shrink-0 text-teal-ink" /><span><span class="block text-sm text-muted-strong">Location</span>{company.location}</span></li>
+            <li class="flex gap-3"><Icon name="globe" size={20} class="mt-1 shrink-0 text-teal-ink" /><span><span class="block text-sm text-muted-strong">Service coverage</span>{company.coverage}</span></li>
+            <li class="flex gap-3"><Icon name="languages" size={20} class="mt-1 shrink-0 text-teal-ink" /><span><span class="block text-sm text-muted-strong">Languages</span>English and Hindi</span></li>
+          </ul>
+        </div>
+
+        <div class="mt-6 rounded-2xl border border-slate-200 p-7">
+          <h2 class="flex items-center gap-2 text-lg font-bold"><Icon name="clock" size={20} class="text-teal-ink" />Business enquiry hours</h2>
+          <dl class="mt-4 space-y-2 text-[15.5px]">
+            {company.hours.map((h) => <div class="flex justify-between gap-4"><dt class="text-muted-strong">{h.day}</dt><dd class="text-right font-medium">{h.time}</dd></div>)}
+          </dl>
+          <p class="mt-4 text-sm text-muted-strong">{company.hoursNote}</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

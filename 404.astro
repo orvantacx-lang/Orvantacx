@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { company } from "../data/site";
+---
+<BaseLayout title="Page Not Found | ORVANTA CX" description="This page could not be found. Return to the ORVANTA CX home page or contact our team." path="/404" noindex>
+  <section class="on-dark bg-navy text-white">
+    <div class="wrap grid items-center gap-10 py-20 sm:py-28 lg:grid-cols-2">
+      <div>
+        <p class="eyebrow mb-3">Error 404</p>
+        <h1 class="text-4xl font-extrabold !text-white sm:text-5xl">Looks Like This Conversation Got Disconnected.</h1>
+        <p class="mt-5 max-w-lg text-lg text-white/75">The page you were looking for does not exist or has moved. Let's get you back on the line.</p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/" class="btn btn-primary">Go to home page</a>
+          <a href="/contact" class="btn btn-outline-light">Contact us</a>
+        </div>
+        <p class="mt-6 text-sm text-white/60">Or email <a class="underline" href={`mailto:${company.email}`}>{company.email}</a></p>
+      </div>
+      <div class="hidden justify-center lg:flex" aria-hidden="true">
+        <svg viewBox="0 0 320 160" class="w-full max-w-sm" fill="none" stroke="#54C7B4" stroke-width="3" stroke-linecap="round">
+          <path d="M10 80 H70 M90 80 H100 M110 80 H120" stroke-opacity=".5"/>
+          <g>{[0,1,2,3,4,5,6].map((i) => <path d={`M${180 + i * 18} ${80 - [10,22,34,16,28,12,6][i]} V${80 + [10,22,34,16,28,12,6][i]}`} />)}</g>
+          <path d="M135 60 L155 100 M155 60 L135 100" stroke="#ffffff" stroke-opacity=".8"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

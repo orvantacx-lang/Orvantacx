@@ -1,0 +1,87 @@
+---
+import Icon from "./Icon.astro";
+// Abstract, decorative illustration. Not a screenshot, not live data, no real figures.
+const bars = Array.from({ length: 21 }, (_, i) => {
+  const h = [10, 18, 28, 20, 34, 46, 30, 52, 38, 62, 44, 56, 32, 48, 26, 36, 18, 24, 14, 10, 8][i];
+  return { x: 175 + i * 10.5, h, d: (i * 0.09).toFixed(2) };
+});
+---
+<svg viewBox="0 0 560 470" role="img" aria-label="Abstract illustration: customer calls and chats reaching an AI voice agent, with a path to human review" class="h-auto w-full">
+  <defs>
+    <radialGradient id="orb" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#2a4a5e"/><stop offset="100%" stop-color="#17283D"/>
+    </radialGradient>
+  </defs>
+
+  <!-- connecting paths -->
+  <g fill="none" stroke="#54C7B4" stroke-opacity=".55" stroke-width="1.6" stroke-dasharray="5 9">
+    <path class="animate-dash" d="M112 110 C 170 110, 190 190, 232 205"/>
+    <path class="animate-dash" d="M448 110 C 390 110, 370 190, 328 205" style="animation-direction:reverse"/>
+    <path class="animate-dash" d="M112 372 C 170 372, 190 290, 232 262"/>
+    <path class="animate-dash" d="M280 322 L 280 372"/>
+  </g>
+
+  <!-- orb -->
+  <circle cx="280" cy="232" r="118" fill="none" stroke="#54C7B4" stroke-opacity=".12" stroke-width="1.5"/>
+  <circle cx="280" cy="232" r="94" fill="none" stroke="#54C7B4" stroke-opacity=".22" stroke-width="1.5"/>
+  <circle cx="280" cy="232" r="72" fill="url(#orb)" stroke="#54C7B4" stroke-width="2"/>
+  <g transform="translate(0 232)">
+    {bars.slice(0, 13).map((b, i) => (
+      <rect x={253.5 + i * 4.2} y={-b.h / 2.6} width="2.6" height={b.h / 1.3} rx="1.3" fill="#54C7B4" class="animate-wave" style={`transform-box:fill-box;transform-origin:center;animation-delay:${(i * 0.11).toFixed(2)}s`} />
+    ))}
+  </g>
+  <text x="280" y="283" text-anchor="middle" font-size="11" font-weight="600" fill="#DDF5EF" font-family="Inter Variable, sans-serif">AI voice agent</text>
+
+  <!-- inbound node -->
+  <g>
+    <rect x="22" y="80" width="130" height="60" rx="12" fill="#17283D" stroke="#54C7B4" stroke-opacity=".5"/>
+    <g transform="translate(40 96)" color="#54C7B4"><Icon name="phone-incoming" size={26} /></g>
+    <text x="78" y="106" font-size="13" font-weight="700" fill="#fff" font-family="Manrope Variable, sans-serif">Inbound</text>
+    <text x="78" y="124" font-size="11" fill="#9fb2c6" font-family="Inter Variable, sans-serif">calls answered</text>
+  </g>
+
+  <!-- outbound node -->
+  <g>
+    <rect x="408" y="80" width="130" height="60" rx="12" fill="#17283D" stroke="#54C7B4" stroke-opacity=".5"/>
+    <g transform="translate(426 96)" color="#54C7B4"><Icon name="phone-outgoing" size={26} /></g>
+    <text x="464" y="106" font-size="13" font-weight="700" fill="#fff" font-family="Manrope Variable, sans-serif">Outbound</text>
+    <text x="464" y="124" font-size="11" fill="#9fb2c6" font-family="Inter Variable, sans-serif">follow-ups</text>
+  </g>
+
+  <!-- chat bubbles -->
+  <g>
+    <rect x="22" y="336" width="130" height="64" rx="12" fill="#17283D" stroke="#54C7B4" stroke-opacity=".5"/>
+    <rect x="34" y="348" width="70" height="16" rx="8" fill="#2c4258"/>
+    <rect x="58" y="370" width="82" height="16" rx="8" fill="#54C7B4" fill-opacity=".85"/>
+    <text x="22" y="418" font-size="11" fill="#9fb2c6" font-family="Inter Variable, sans-serif">Website chat</text>
+  </g>
+
+  <!-- human review -->
+  <g>
+    <rect x="212" y="372" width="136" height="54" rx="12" fill="#DDF5EF"/>
+    <circle cx="240" cy="394" r="8" fill="none" stroke="#17776a" stroke-width="2"/>
+    <path d="M226 416 a14 11 0 0 1 28 0" fill="none" stroke="#17776a" stroke-width="2" stroke-linecap="round"/>
+    <text x="262" y="396" font-size="12" font-weight="700" fill="#101D30" font-family="Manrope Variable, sans-serif">Human review</text>
+    <text x="262" y="412" font-size="10.5" fill="#35505f" font-family="Inter Variable, sans-serif">complex matters</text>
+  </g>
+
+  <!-- illustrative dashboard -->
+  <g>
+    <rect x="388" y="318" width="150" height="92" rx="12" fill="#17283D" stroke="#54C7B4" stroke-opacity=".5"/>
+    <rect x="402" y="334" width="52" height="6" rx="3" fill="#2c4258"/>
+    <g fill="#54C7B4">
+      <rect x="404" y="372" width="12" height="22" rx="2" fill-opacity=".5"/><rect x="422" y="360" width="12" height="34" rx="2" fill-opacity=".7"/>
+      <rect x="440" y="366" width="12" height="28" rx="2" fill-opacity=".6"/><rect x="458" y="350" width="12" height="44" rx="2"/>
+      <rect x="476" y="358" width="12" height="36" rx="2" fill-opacity=".75"/><rect x="494" y="368" width="12" height="26" rx="2" fill-opacity=".55"/>
+    </g>
+    <text x="388" y="428" font-size="11" fill="#9fb2c6" font-family="Inter Variable, sans-serif">Summaries (illustrative)</text>
+  </g>
+
+  <!-- language chips -->
+  <g font-family="Inter Variable, Noto Sans Devanagari Variable, sans-serif" font-size="12" font-weight="600">
+    <rect x="206" y="28" width="68" height="28" rx="14" fill="none" stroke="#54C7B4" stroke-opacity=".6"/>
+    <text x="240" y="47" text-anchor="middle" fill="#DDF5EF">English</text>
+    <rect x="286" y="28" width="68" height="28" rx="14" fill="none" stroke="#54C7B4" stroke-opacity=".6"/>
+    <text x="320" y="47" text-anchor="middle" fill="#DDF5EF">हिन्दी</text>
+  </g>
+</svg>

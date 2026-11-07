@@ -1,0 +1,53 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import PricingCards from "../components/PricingCards.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import CTASection from "../components/CTASection.astro";
+import Icon from "../components/Icon.astro";
+import { pricingDisclaimer, pricingFactors, faqs } from "../data/content";
+import FAQ from "../components/FAQ.astro";
+const pricingFaqs = faqs.filter((f) => ["How is pricing calculated?", "Are phone calls and AI usage included in the monthly fee?", "Can we start with a small pilot?", "Do you support international clients?"].includes(f.q));
+---
+<BaseLayout
+  title="Pricing | Flexible AI Contact Centre Packages"
+  description="Indicative starting prices for ORVANTA CX AI contact centre packages, from Starter to Enterprise. Final pricing depends on volumes, scope and technical assessment."
+  path="/pricing"
+  crumbs={[{ name: "Pricing", path: "/pricing" }]}
+>
+  <PageHero
+    eyebrow="Pricing"
+    title="Flexible AI Contact Centre Pricing."
+    lead="Start with the level of customer communication support you need. Final pricing is based on your call volumes, service requirements, technology usage and operating arrangements."
+    crumbs={[{ name: "Pricing" }]}
+  />
+
+  <section class="py-16 sm:py-20">
+    <div class="wrap">
+      <PricingCards />
+      <aside class="mt-10 flex gap-4 rounded-xl border border-amber-300 bg-amber-50 p-5 text-amber-950" aria-label="Pricing disclaimer">
+        <Icon name="info" size={22} class="mt-0.5 shrink-0" />
+        <p class="text-[15.5px]"><strong>Please note.</strong> {pricingDisclaimer}</p>
+      </aside>
+      <p class="mt-4 max-w-3xl text-[15px] text-muted-strong">Prices are shown in Indian rupees. We do not convert them automatically for other currencies; international pricing is quoted after we review your requirements and delivery costs.</p>
+    </div>
+  </section>
+
+  <section class="bg-mist py-16 sm:py-20">
+    <div class="wrap grid gap-10 lg:grid-cols-12">
+      <div class="lg:col-span-5"><SectionHeading eyebrow="What affects the price" title="The final price depends on:" lead="We quote only after reviewing these with you. We do not offer unlimited minutes or interactions." /></div>
+      <ul class="grid gap-x-6 gap-y-3 sm:grid-cols-2 lg:col-span-7">
+        {pricingFactors.map((f) => <li class="flex gap-3 text-[15.5px]"><Icon name="check" size={18} class="mt-1 shrink-0 text-teal-ink" />{f}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-20">
+    <div class="wrap">
+      <SectionHeading eyebrow="Pricing questions" title="Common questions" />
+      <div class="mt-8"><FAQ items={pricingFaqs} /></div>
+    </div>
+  </section>
+
+  <CTASection title="Get a quotation for your requirements" text="Tell us your volumes, languages and the workflows you have in mind. We will review them and come back with a quotation after a technical assessment." primary={{ label: "Request a quotation", href: "/contact" }} secondary={{ label: "Compare services", href: "/services" }} />
+</BaseLayout>

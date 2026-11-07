@@ -1,0 +1,74 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "../components/PageHero.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import CTASection from "../components/CTASection.astro";
+import Icon from "../components/Icon.astro";
+import { values } from "../data/content";
+---
+<BaseLayout
+  title="About ORVANTA CX | AI-Powered BPO in Lucknow, India"
+  description="ORVANTA CX is an AI-powered BPO and contact centre provider in Lucknow, India, managing customer interactions with AI voice agents, chatbots and human oversight."
+  path="/about"
+  crumbs={[{ name: "About Us", path: "/about" }]}
+>
+  <PageHero
+    eyebrow="About ORVANTA CX"
+    title="Building Better Customer Experiences Through AI-Powered Communication."
+    lead="ORVANTA CX is an AI-powered BPO and contact centre service provider based in Lucknow, India. We help businesses manage customer interactions through intelligent voice agents, chatbots and structured support workflows."
+    crumbs={[{ name: "About Us" }]}
+  />
+
+  <section class="py-16 sm:py-24">
+    <div class="wrap grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-5"><SectionHeading eyebrow="Who we are" title="A customer communication partner, not a call-handling factory." /></div>
+      <div class="prose-lite space-y-4 text-[17px] text-muted-strong lg:col-span-7">
+        <p>ORVANTA CX focuses on helping businesses manage repetitive customer communication requirements through AI-assisted voice and chat systems.</p>
+        <p>The aim is to make customer communication more organised, consistent and scalable, while keeping human oversight available for cases that require judgement.</p>
+        <p>We are a new company and we say so plainly. This site describes what we offer and how we work; it does not list clients, results or numbers we cannot yet stand behind.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-mist py-16 sm:py-20">
+    <div class="wrap grid gap-6 md:grid-cols-2">
+      <div class="rounded-2xl bg-white p-8">
+        <Icon name="target" size={26} class="text-teal-ink" />
+        <h2 class="mt-4 text-2xl font-extrabold">Our Mission</h2>
+        <p class="mt-3 text-[17px] text-muted-strong">To make customer communication more accessible, efficient and manageable through responsible AI-powered contact centre services.</p>
+      </div>
+      <div class="on-dark rounded-2xl bg-navy p-8 text-white">
+        <Icon name="telescope" size={26} class="text-teal" />
+        <h2 class="mt-4 text-2xl font-extrabold !text-white">Our Vision</h2>
+        <p class="mt-3 text-[17px] text-white/80">To become a trusted AI-powered BPO partner for businesses in India and international markets.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 sm:py-24">
+    <div class="wrap">
+      <SectionHeading eyebrow="Our values" title="What we hold ourselves to." />
+      <dl class="mt-12 grid gap-x-12 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+        {values.map((v) => (
+          <div class="border-t border-slate-300 pt-5">
+            <dt class="font-display text-lg font-bold">{v.title}</dt>
+            <dd class="mt-2 text-[15.5px] text-muted-strong">{v.text}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="bg-mist py-16 sm:py-24">
+    <div class="wrap grid gap-12 lg:grid-cols-12">
+      <div class="lg:col-span-5"><SectionHeading eyebrow="Our approach" title="Designed around your business." /></div>
+      <div class="space-y-4 text-[17px] text-muted-strong lg:col-span-7">
+        <p>We design each service around the client's requirements, existing systems, customer expectations and agreed workflows. We begin by listening to the conversations your customers already have with you, then decide together which are suitable for AI and which should remain with your people.</p>
+        <p>Nothing goes live without your approval. We test conversations before launch, tell you what we have and have not connected, and review how the service performs afterwards.</p>
+        <p><a href="/how-we-work" class="font-semibold text-teal-ink hover:underline">See how we work →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</BaseLayout>

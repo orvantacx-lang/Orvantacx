@@ -1,0 +1,61 @@
+---
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import { company, mainNav, legalNav } from "../data/site";
+import { services } from "../data/services";
+import { industries } from "../data/content";
+const year = new Date().getFullYear();
+const serviceLinks = [
+  { name: "AI Voice Solutions", href: "/ai-voice-solutions" },
+  ...services.filter((s) => ["ai-chat-support", "ai-inbound-calling", "ai-outbound-calling"].includes(s.slug)).map((s) => ({ name: s.name, href: s.href })),
+];
+---
+<footer class="on-dark bg-navy text-white/75">
+  <div class="wrap grid gap-10 py-14 lg:grid-cols-12">
+    <div class="lg:col-span-3">
+      <a href="/" aria-label="ORVANTA CX home"><Logo dark /></a>
+      <p class="mt-4 max-w-xs text-[15px] leading-relaxed">{company.positioning} AI voice agents and chatbots for routine customer conversations, with people for the rest.</p>
+    </div>
+
+    <nav aria-label="Footer" class="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-5">
+      <div>
+        <h2 class="font-display text-sm font-bold tracking-wide text-white">Quick links</h2>
+        <ul class="mt-4 space-y-2.5 text-[15px]">
+          {mainNav.map((n) => <li><a class="hover:text-teal" href={n.href}>{n.label}</a></li>)}
+        </ul>
+      </div>
+      <div>
+        <h2 class="font-display text-sm font-bold tracking-wide text-white">Services</h2>
+        <ul class="mt-4 space-y-2.5 text-[15px]">
+          {serviceLinks.map((n) => <li><a class="hover:text-teal" href={n.href}>{n.name}</a></li>)}
+        </ul>
+      </div>
+      <div class="col-span-2 sm:col-span-1">
+        <h2 class="font-display text-sm font-bold tracking-wide text-white">Industries</h2>
+        <ul class="mt-4 space-y-2.5 text-[15px]">
+          {industries.map((n) => <li><a class="hover:text-teal" href={`/industries#${n.slug}`}>{n.name}</a></li>)}
+        </ul>
+      </div>
+    </nav>
+
+    <div class="lg:col-span-4">
+      <h2 class="font-display text-sm font-bold tracking-wide text-white">Contact</h2>
+      <ul class="mt-4 space-y-3 text-[15px]">
+        <li class="flex gap-3"><Icon name="mail" size={18} class="mt-1 shrink-0 text-teal" /><a class="hover:text-teal" href={`mailto:${company.email}`}>{company.email}</a></li>
+        <li class="flex gap-3"><Icon name="phone" size={18} class="mt-1 shrink-0 text-teal" /><a class="hover:text-teal" href={company.phoneHref}>{company.phone}</a></li>
+        <li class="flex gap-3"><Icon name="map-pin" size={18} class="mt-1 shrink-0 text-teal" /><span>{company.location}</span></li>
+        <li class="flex gap-3"><Icon name="clock" size={18} class="mt-1 shrink-0 text-teal" />
+          <span>Enquiry hours: Mon–Fri, 10:00 AM – 6:00 PM IST<br />Saturday by appointment · Sunday closed</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <div class="wrap flex flex-col gap-3 py-6 text-sm sm:flex-row sm:items-center sm:justify-between">
+      <p>© {year} {company.name}. All rights reserved.</p>
+      <ul class="flex gap-5">
+        {legalNav.map((n) => <li><a class="hover:text-teal" href={n.href}>{n.label}</a></li>)}
+      </ul>
+    </div>
+  </div>
+</footer>

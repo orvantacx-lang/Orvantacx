@@ -1,0 +1,70 @@
+---
+import LegalPage from "../layouts/LegalPage.astro";
+import { company } from "../data/site";
+
+const sections = [
+  { id: "scope", heading: "Scope of services", body: [
+    "ORVANTA CX provides AI-powered contact centre services, such as AI voice agents and chatbots for inbound and permitted outbound communication, lead and enquiry capture, appointment requests and reporting. The services included for a client are those set out in the written quotation or order form agreed between the parties. Anything not listed there is not included.",
+  ]},
+  { id: "client", heading: "Client responsibilities", body: [
+    "The client provides accurate and current business information, reviews and approves scripts and answers, tells us promptly about changes to prices, offers, policies or contacts, and gives the access that agreed workflows need.",
+  ]},
+  { id: "approved", heading: "Approved scripts and information", body: [
+    "AI agents answer from information the client has approved. The client is responsible for the accuracy and lawfulness of that information. We are not responsible for outcomes caused by inaccurate or outdated client information.",
+  ]},
+  { id: "authorisation", heading: "Client authorisation for calls and communications", body: [
+    "The client confirms that it is entitled to contact the people it asks us to contact, and that it has obtained the consents and kept the preference records that the law requires. We do not support unsolicited mass calling or messaging.",
+  ]},
+  { id: "telecom", heading: "Calling permissions and telecom rules", body: [
+    "Outbound calls must comply with telecom, privacy and consumer-protection rules that apply in the countries concerned, including rules on do-not-call registers, calling hours and AI disclosure. We may decline, pause or stop any campaign that we reasonably believe does not comply.",
+  ]},
+  { id: "ai-costs", heading: "AI usage and third-party provider costs", body: [
+    "AI models, voice services, telephony, phone numbers and other third-party services carry their own costs. Unless the quotation states that they are included, through a specifically agreed allowance, they are charged separately.",
+  ]},
+  { id: "setup", heading: "Setup charges", body: [
+    "One-time setup charges, where applicable, are stated in the quotation and are payable as stated there.",
+  ]},
+  { id: "monthly", heading: "Monthly charges", body: [
+    "Prices shown on our website are indicative starting prices only. Monthly charges are those in the final quotation, which depends on factors such as volumes, languages, integrations, reporting and service hours.",
+  ]},
+  { id: "usage", heading: "Usage limits", body: [
+    "Services have the usage scope set out in the quotation. We do not offer unlimited minutes or interactions. Use above the agreed scope may be charged or may require a revised quotation.",
+  ]},
+  { id: "payment", heading: "Payment terms", body: [
+    "Invoicing, due dates, currency and taxes are set out in the quotation or order form. [Payment terms to be confirmed during legal review.]",
+  ]},
+  { id: "availability", heading: "Service availability", body: [
+    "Service hours are configured per client and are not assumed to be round-the-clock. Services depend on third-party providers and internet and telephone networks, and may be interrupted. We do not promise uninterrupted or error-free operation unless a service level has been agreed in writing.",
+  ]},
+  { id: "escalation", heading: "Human escalation", body: [
+    "Escalation routes and the hours of the people who receive escalated conversations are agreed with the client before launch. If no one is available, the workflow may take a message or record a callback request instead.",
+  ]},
+  { id: "data", heading: "Data handling", body: [
+    "We handle personal information as described in our Privacy Policy and in the arrangement with the client. Recordings and transcripts are made only where configured and where the required notices and permissions are in place.",
+  ]},
+  { id: "confidentiality", heading: "Confidentiality", body: [
+    "Each party keeps the other's non-public business information confidential and uses it only for the purposes of the services, except where disclosure is required by law.",
+  ]},
+  { id: "limitations", heading: "Service limitations", body: [
+    "AI agents can misunderstand speech or text and can make mistakes. They are intended for routine, approved interactions and are not a substitute for professional judgement. Our services must not be used for medical diagnosis, medical advice, treatment recommendations, emergency triage or legal advice. We do not guarantee any particular business result, such as sales, savings or customer satisfaction.",
+  ]},
+  { id: "liability", heading: "Liability", body: [
+    "To the extent permitted by law, ORVANTA CX is not liable for indirect or consequential losses, and its total liability is limited as set out in the agreement with the client. [Limits to be set during legal review.]",
+  ]},
+  { id: "termination", heading: "Termination", body: [
+    "Either party may end an engagement by giving the notice stated in the quotation or order form. We may suspend or end a service immediately if it is used unlawfully or in breach of these terms. Charges for work done and costs already committed remain payable.",
+  ]},
+  { id: "disputes", heading: "Dispute handling", body: [
+    "The parties will first try to resolve a dispute through good-faith discussion. Governing law and jurisdiction will be stated in the agreement. [Governing law and forum to be confirmed during legal review.]",
+    `Questions about these terms: ${company.email}.`,
+  ]},
+];
+---
+<LegalPage
+  title="Terms of Service"
+  seoTitle="Terms of Service (Draft) | ORVANTA CX"
+  description="Draft Terms of Service for ORVANTA CX: scope, client responsibilities, calling permissions, charges, availability, escalation, liability and termination."
+  path="/terms-of-service"
+  intro="The terms on which ORVANTA CX provides its services. Draft for legal review."
+  sections={sections}
+/>

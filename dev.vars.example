@@ -1,0 +1,9 @@
+# Local secrets for `wrangler pages dev`. Copy to .dev.vars (git-ignored). NEVER commit real values.
+# Generate FORM_SECRET with:  openssl rand -hex 32
+FORM_SECRET=
+# Optional — Cloudflare Turnstile (free). Leave empty to disable.
+TURNSTILE_SECRET_KEY=
+# Optional — email notification via Resend (needs an account + verified sender). Leave empty to disable.
+RESEND_API_KEY=
+NOTIFY_TO_EMAIL=
+NOTIFY_FROM_EMAIL=
