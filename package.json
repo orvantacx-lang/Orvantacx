@@ -1,0 +1,39 @@
+{
+  "name": "orvanta-cx",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "ORVANTA CX website: Astro + Tailwind on Cloudflare Pages Functions + D1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check && tsc -p functions/tsconfig.json --noEmit",
+    "test": "vitest run",
+    "cf:dev": "npm run build && wrangler pages dev dist",
+    "db:migrate:local": "wrangler d1 migrations apply orvanta-cx-enquiries --local",
+    "db:migrate:remote": "wrangler d1 migrations apply orvanta-cx-enquiries --remote",
+    "test:e2e:api": "node tests/e2e/api.mjs",
+    "test:e2e:browser": "node tests/e2e/browser.mjs",
+    "test:a11y": "node tests/e2e/a11y.mjs",
+    "icons": "node scripts/generate-icons.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource-variable/inter": "^5.2.5",
+    "@fontsource-variable/manrope": "^5.2.5",
+    "@fontsource-variable/noto-sans-devanagari": "^5.3.0",
+    "@lucide/astro": "^1.70.0",
+    "astro": "^7.4.7"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@cloudflare/workers-types": "^5.20261107.1",
+    "@tailwindcss/vite": "^4.3.5",
+    "axe-core": "^4.14.0",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^5.9.0",
+    "vitest": "^5.1.0",
+    "wrangler": "^4.158.0"
+  }
+}
